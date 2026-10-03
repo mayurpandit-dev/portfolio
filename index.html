@@ -56,7 +56,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 32px;backdrop-filt
 @keyframes blink{0%,100%{opacity:1;box-shadow:0 0 6px currentColor}50%{opacity:0.3;box-shadow:none}}
 
 .hero-name{font-size:clamp(52px,8.5vw,96px);font-weight:700;line-height:0.93;letter-spacing:-0.04em;color:#fff;margin-bottom:14px;opacity:0;animation:fade-up 0.8s 0.45s cubic-bezier(0.16,1,0.3,1) forwards}
-/* .hero-name .first{display:block} */
+.hero-name .first{display:block}
 .hero-name .last{background:linear-gradient(135deg,var(--a2) 0%,var(--cyan) 60%,var(--green) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradient-shift 4s ease infinite alternate}
 @keyframes gradient-shift{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(30deg)}}
 
@@ -289,7 +289,7 @@ footer{border-top:1px solid var(--border);padding:40px 0;margin-top:80px;positio
       </div>
       <div class="ai-tools-grid">
         <div class="ai-tool">
-          <div class="ai-tool-name">ChatGPT / GPT-4</div>
+          <div class="ai-tool-name">ChatGPT (GPT-5.5)</div>
           <div class="ai-tool-use">Code gen & debugging</div>
         </div>
         <div class="ai-tool">
@@ -297,12 +297,16 @@ footer{border-top:1px solid var(--border);padding:40px 0;margin-top:80px;positio
           <div class="ai-tool-use">AI pair programming</div>
         </div>
         <div class="ai-tool">
-          <div class="ai-tool-name">Claude (Anthropic)</div>
+          <div class="ai-tool-name">Claude Sonnet 5 (Anthropic)</div>
           <div class="ai-tool-use">Architecture & analysis</div>
         </div>
         <div class="ai-tool">
           <div class="ai-tool-name">Cursor IDE</div>
           <div class="ai-tool-use">AI-native code editor</div>
+        </div>
+        <div class="ai-tool">
+          <div class="ai-tool-name">Superblocks</div>
+          <div class="ai-tool-use">AI-native low-code app builder</div>
         </div>
         <div class="ai-tool">
           <div class="ai-tool-name">Prompt Engineering</div>
@@ -362,10 +366,11 @@ footer{border-top:1px solid var(--border);padding:40px 0;margin-top:80px;positio
     </div>
     <div class="pills-label">AI & Emerging Tools</div>
     <div class="pills-wrap">
-      <span class="pill ai">ChatGPT / GPT-4</span>
+      <span class="pill ai">ChatGPT (GPT-5.5)</span>
       <span class="pill ai">GitHub Copilot</span>
-      <span class="pill ai">Claude AI</span>
+      <span class="pill ai">Claude Sonnet 5</span>
       <span class="pill ai">Cursor IDE</span>
+      <span class="pill ai">Superblocks</span>
       <span class="pill ai">Prompt Engineering</span>
       <span class="pill ai">LLM APIs</span>
       <span class="pill ai">AI Code Review</span>
@@ -399,6 +404,7 @@ footer{border-top:1px solid var(--border);padding:40px 0;margin-top:80px;positio
               <li>Mentored junior analysts and developers, enforcing best practices, code standards, and modern AI-augmented workflows</li>
               <li>Managed project timelines coordinating with cross-functional stakeholders across US, Canada, and Philippine sites</li>
               <li class="ai-bullet">Leveraged LLM-based tools for automated code reviews, documentation generation, and test case creation<span class="ai-bullet-tag">AI</span></li>
+              <li>Completed internal Manager Training program, building leadership, people-management, and delivery-ownership capability</li>
             </ul>
           </div>
         </div>
@@ -415,7 +421,6 @@ footer{border-top:1px solid var(--border);padding:40px 0;margin-top:80px;positio
             <ul class="tl-bullets">
               <li>Developed and maintained software applications tailored to business requirements, improving system reliability and user satisfaction</li>
               <li>Optimized existing codebase to enhance application performance and reduce downtime for seamless user experience</li>
-              <li class="ai-bullet">Adopted AI-assisted debugging tools to identify and resolve performance bottlenecks faster across legacy systems<span class="ai-bullet-tag">AI</span></li>
             </ul>
           </div>
         </div>
@@ -516,13 +521,27 @@ footer{border-top:1px solid var(--border);padding:40px 0;margin-top:80px;positio
 
       <div style="margin-top:40px">
         <div class="section-head reveal">
+          <div class="section-head-label">Training</div>
+          <div class="section-head-line"></div>
+        </div>
+        <div class="s-card">
+          <div class="s-card-icon pink-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div class="s-title">Internal Manager Training</div>
+          <div class="s-sub">Foundever</div>
+          <div class="s-detail">Leadership and people-management program for team and delivery ownership</div>
+          <span class="badge badge-pink">Completed</span>
+        </div>
+      </div>
+
+      <div style="margin-top:40px">
+        <div class="section-head reveal">
           <div class="section-head-label">Expertise</div>
           <div class="section-head-line"></div>
         </div>
         <div class="s-card">
           <div class="s-card-icon pink-icon"><svg viewBox="0 0 24 24"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/><circle cx="8.5" cy="14.5" r="1.5"/><circle cx="15.5" cy="14.5" r="1.5"/></svg></div>
           <div class="s-title">AI-Augmented Development</div>
-          <div class="s-detail">GitHub Copilot, ChatGPT, Claude, Cursor — shipping faster with AI-native workflows</div>
+          <div class="s-detail">GitHub Copilot, ChatGPT (GPT-5.5), Claude Sonnet 5, Cursor, Superblocks — shipping faster with AI-native workflows</div>
           <span class="badge badge-pink">2024–Present</span>
         </div>
         <div class="s-card">
