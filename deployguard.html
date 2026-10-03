@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DeployGuard — Mayur Pandit</title>
+<meta name="description" content="DeployGuard is an AI-powered application security and deployment readiness platform. Register a service, inspect health and security gates, and decide whether to deploy, hold, or block.">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#05050d;--bg2:#0c0c18;--bg3:#12121f;--bg4:#1a1a28;
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.1);--border3:rgba(255,255,255,0.16);
+  --a1:#6c63ff;--a2:#8b7fff;--a3:#b4aeff;--a4:#e0dcff;
+  --cyan:#00d4ff;--cyan2:rgba(0,212,255,0.08);
+  --green:#00e5a0;--green2:rgba(0,229,160,0.08);
+  --pink:#ff6b9d;--pink2:rgba(255,107,157,0.08);
+  --amber:#ffb347;--amber2:rgba(255,179,71,0.08);
+  --text:#eeeef8;--text2:#8888aa;--text3:#44445a;
+  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+  --dg-bg:#0b1220;--dg-panel:#121a28;--dg-line:#243044;--dg-ink:#e7edf5;--dg-muted:#93a0b4;--dg-accent:#3dcc8e;--dg-warn:#e4b85c;--dg-danger:#ef6d64;--dg-info:#7eb6ff;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.7;overflow-x:hidden}
+#cursor-glow{position:fixed;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(108,99,255,0.07) 0%,transparent 70%);pointer-events:none;transform:translate(-50%,-50%);z-index:0;transition:left 0.08s,top 0.08s}
+.bg-layer{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg-orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:0.55;animation:orb-float 14s ease-in-out infinite}
+.bg-orb:nth-child(1){width:700px;height:700px;background:rgba(108,99,255,0.09);top:-250px;right:-200px}
+.bg-orb:nth-child(2){width:450px;height:450px;background:rgba(0,212,255,0.06);bottom:-120px;left:-120px;animation-delay:-6s}
+.bg-orb:nth-child(3){width:350px;height:350px;background:rgba(0,229,160,0.05);top:45%;left:35%;animation-delay:-10s}
+@keyframes orb-float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-50px) scale(1.06)}66%{transform:translate(-25px,35px) scale(0.94)}}
+.bg-grid{position:fixed;inset:0;background-image:linear-gradient(rgba(108,99,255,0.022) 1px,transparent 1px),linear-gradient(90deg,rgba(108,99,255,0.022) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
+.wrap{max-width:1100px;margin:0 auto;padding:0 28px;position:relative;z-index:2}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 32px;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);background:rgba(5,5,13,0.75);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:var(--mono);font-size:13px;color:var(--a3);letter-spacing:0.05em;text-decoration:none}
+.nav-links{display:flex;gap:6px;list-style:none}
+.nav-links a{font-size:12px;font-family:var(--mono);color:var(--text3);text-decoration:none;padding:5px 12px;border-radius:6px;letter-spacing:0.04em;transition:all 0.2s}
+.nav-links a:hover{color:var(--a3);background:rgba(108,99,255,0.08)}
+.hero{padding:128px 0 28px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;color:var(--green);background:var(--green2);border:1px solid rgba(0,229,160,0.15);padding:5px 14px;border-radius:100px;margin-bottom:18px;letter-spacing:0.07em}
+.eyebrow::before{content:'';width:6px;height:6px;background:var(--green);border-radius:50%}
+h1{font-size:clamp(44px,7vw,76px);font-weight:700;line-height:0.95;letter-spacing:-0.04em;color:#fff;margin-bottom:14px}
+h1 span{background:linear-gradient(135deg,var(--a2) 0%,var(--cyan) 55%,var(--green) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.lede{font-size:18px;color:#fff;font-weight:500;max-width:720px;margin-bottom:12px}
+.summary{font-size:15px;color:var(--text2);max-width:740px;line-height:1.85;margin-bottom:28px}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--a1),#8b3cf7);color:#fff;font-size:13px;font-weight:600;padding:10px 22px;border-radius:8px;text-decoration:none;transition:all 0.25s;box-shadow:0 4px 24px rgba(108,99,255,0.35)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(108,99,255,0.5)}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--a3);font-size:13px;font-weight:500;padding:10px 22px;border-radius:8px;text-decoration:none;border:1px solid rgba(108,99,255,0.3);transition:all 0.25s}
+.btn-outline:hover{background:rgba(108,99,255,0.08);border-color:rgba(108,99,255,0.5);transform:translateY(-2px)}
+.section{margin-top:64px}
+.section-head{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.section-head-label{font-family:var(--mono);font-size:11px;color:var(--a2);letter-spacing:0.15em;text-transform:uppercase;white-space:nowrap}
+.section-head-line{height:1px;flex:1;background:linear-gradient(to right,var(--border2),transparent)}
+.section p{color:var(--text2);max-width:760px}
+.browser{margin-top:36px;background:var(--dg-bg);border:1px solid var(--border2);border-radius:16px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.35)}
+.browser-bar{display:flex;align-items:center;gap:10px;height:42px;padding:0 14px;background:#0e1624;border-bottom:1px solid var(--dg-line);font-family:var(--mono);font-size:11px;color:var(--dg-muted);letter-spacing:0.04em}
+.dots{display:flex;gap:6px}
+.dots i{width:8px;height:8px;border-radius:50%;background:#243044;display:block}
+.dots i:nth-child(1){background:#ef6d64}
+.dots i:nth-child(2){background:#e4b85c}
+.dots i:nth-child(3){background:#3dcc8e}
+.browser iframe{display:block;width:100%;height:720px;border:0;background:var(--dg-bg)}
+.caption{margin-top:10px;font-family:var(--mono);font-size:11px;color:var(--text3);letter-spacing:0.03em}
+.grid-2{display:grid;grid-template-columns:1.1fr 0.9fr;gap:16px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:22px;transition:transform 0.25s,border-color 0.25s,background 0.25s}
+.card:hover{transform:translateY(-3px);border-color:var(--border2);background:var(--bg3)}
+.card h2{font-size:16px;color:#fff;font-weight:600;margin-bottom:8px;letter-spacing:-0.02em}
+.card p{font-size:13px;color:var(--text2);line-height:1.7}
+.kicker{font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--a2);margin-bottom:8px}
+.steps{display:grid;gap:10px}
+.step{display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start;background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;transition:border-color 0.25s,transform 0.25s}
+.step:hover{border-color:rgba(108,99,255,0.35);transform:translateX(4px)}
+.step b{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:rgba(108,99,255,0.12);color:var(--a3);font-family:var(--mono);font-size:12px}
+.step strong{display:block;color:#fff;font-size:14px;font-weight:600}
+.step span{display:block;color:var(--text2);font-size:13px;line-height:1.55}
+.gates{display:flex;flex-wrap:wrap;gap:8px}
+.gate{font-size:12px;font-family:var(--mono);color:var(--text2);background:var(--bg2);border:1px solid var(--border2);padding:6px 12px;border-radius:8px;letter-spacing:0.02em;transition:transform 0.2s,border-color 0.2s,color 0.2s}
+.gate:hover{transform:translateY(-2px);color:var(--a4);border-color:rgba(108,99,255,0.35)}
+.gate.health{color:var(--cyan);border-color:rgba(0,212,255,0.2);background:var(--cyan2)}
+.gate.security{color:var(--green);border-color:rgba(0,229,160,0.18);background:var(--green2)}
+.formula{font-family:var(--mono);font-size:13px;color:var(--a4);background:rgba(108,99,255,0.08);border:1px solid rgba(108,99,255,0.2);border-radius:10px;padding:14px 16px;margin:14px 0}
+.rules{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.rules li{font-size:13px;color:var(--text2);padding-left:16px;position:relative}
+.rules li::before{content:'';position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:linear-gradient(135deg,var(--a1),var(--cyan))}
+.verdicts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.verdict{border-radius:10px;padding:12px;border:1px solid var(--border)}
+.verdict strong{display:block;font-size:13px;margin-bottom:4px}
+.verdict span{font-size:12px;color:var(--text2);line-height:1.5}
+.verdict.ok{background:var(--green2);border-color:rgba(0,229,160,0.2)}
+.verdict.ok strong{color:var(--green)}
+.verdict.hold{background:var(--amber2);border-color:rgba(255,179,71,0.22)}
+.verdict.hold strong{color:var(--amber)}
+.verdict.stop{background:rgba(239,109,100,0.08);border-color:rgba(239,109,100,0.25)}
+.verdict.stop strong{color:#ef6d64}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{font-size:12px;font-family:var(--mono);color:var(--text2);background:var(--bg2);border:1px solid var(--border2);padding:6px 14px;border-radius:8px;letter-spacing:0.03em;transition:all 0.2s}
+.pill:hover{color:var(--a4);background:rgba(108,99,255,0.08);border-color:rgba(108,99,255,0.3);transform:translateY(-2px)}
+.pill.ai{color:var(--pink);background:var(--pink2);border-color:rgba(255,107,157,0.2)}
+.note{margin-top:14px;font-size:13px;color:var(--text3)}
+footer{border-top:1px solid var(--border);padding:36px 0;margin-top:80px;position:relative;z-index:2}
+.footer-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.footer-name{font-family:var(--mono);font-size:13px;color:var(--text3);letter-spacing:0.05em}
+.footer-name span{color:var(--a3)}
+.footer-links{display:flex;gap:16px;list-style:none}
+.footer-links a{font-size:12px;font-family:var(--mono);color:var(--text3);text-decoration:none;letter-spacing:0.04em;transition:color 0.2s}
+.footer-links a:hover{color:var(--a3)}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.7s cubic-bezier(0.16,1,0.3,1),transform 0.7s cubic-bezier(0.16,1,0.3,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@media(max-width:900px){
+  .grid-2,.grid-3,.verdicts{grid-template-columns:1fr}
+  .browser iframe{height:640px}
+}
+@media(max-width:800px){
+  nav{padding:0 16px}
+  .wrap{padding:0 18px}
+  .hero{padding:108px 0 20px}
+  .nav-links a{padding:5px 8px}
+  .nav-links a[href^="#"]{display:none}
+}
+@media(max-width:480px){
+  h1{font-size:clamp(36px,12vw,48px)}
+  .browser iframe{height:520px}
+  .browser-bar span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  footer .footer-inner{flex-direction:column;text-align:center}
+}
+</style>
+</head>
+<body>
+<div id="cursor-glow"></div>
+<div class="bg-layer">
+  <div class="bg-orb"></div><div class="bg-orb"></div><div class="bg-orb"></div>
+</div>
+<div class="bg-grid"></div>
+
+<nav>
+  <a class="nav-logo" href="index.html">mayur.pandit</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Portfolio</a></li>
+    <li><a href="#preview">Preview</a></li>
+    <li><a href="#inspection">Inspection</a></li>
+    <li><a href="#tony">Tony</a></li>
+    <li><a href="https://deployguard.mayurpandit.in/" target="_blank" rel="noopener">Demo</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow">Featured project</div>
+    <h1>Deploy<span>Guard</span></h1>
+    <p class="lede">AI-powered application security and deployment readiness platform.</p>
+    <p class="summary">DeployGuard is the release gate for a registered service fleet. Teams register an application, run an inspection across health and security controls, and get a scored decision: deploy, hold for review, or block. Tony, the in-product advisor, answers from those results.</p>
+    <div class="hero-cta">
+      <a class="btn-primary" href="https://deployguard.mayurpandit.in/" target="_blank" rel="noopener">Open live demo</a>
+      <a class="btn-outline" href="index.html">Back to portfolio</a>
+    </div>
+  </header>
+
+  <section class="section reveal" id="preview">
+    <div class="section-head">
+      <div class="section-head-label">Product</div>
+      <div class="section-head-line"></div>
+    </div>
+    <p>The operations dashboard is the product surface: fleet posture, health versus security, services that need a decision, and the inspection calendar. The frame below is the DeployGuard demo UI, signed in on sample data.</p>
+    <div class="browser">
+      <div class="browser-bar">
+        <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>DeployGuard · Production readiness</span>
+      </div>
+      <iframe src="deployguard-demo/index.html?preview=1#dashboard" title="DeployGuard production readiness dashboard"></iframe>
+    </div>
+    <p class="caption">Interactive demo. Sign-in, inspections, and Tony stay in the browser. This copy does not call the DeployGuard API.</p>
+  </section>
+
+  <section class="section reveal" id="problem">
+    <div class="section-head">
+      <div class="section-head-label">Problem</div>
+      <div class="section-head-line"></div>
+    </div>
+    <div class="grid-2">
+      <article class="card">
+        <p class="kicker">What it solves</p>
+        <h2>A release decision with no shared gate</h2>
+        <p>Health, headers, auth, secrets, and dependency risk usually live in different tools. DeployGuard puts a registered service on one gate so an owner, a security reviewer, and a release operator see the same score and the same block reason.</p>
+      </article>
+      <article class="card">
+        <p class="kicker">What it does</p>
+        <h2>Register, inspect, score, advise</h2>
+        <p>Register the service and its health URL. Run an inspection. Review health and security. Score readiness. Ask the advisor whether to ship. Open the result to print a readiness report. Scheduled services stay on a daily, weekly, monthly, or yearly calendar.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section reveal" id="inspection">
+    <div class="section-head">
+      <div class="section-head-label">Inspection</div>
+      <div class="section-head-line"></div>
+    </div>
+    <p>An inspection walks a fixed sequence, then writes a health score, a security score, a readiness score, a written analysis, and recommendations. HTTPS is taken from the registered health URL. The other gates, dependency notes, header evidence, and method notes are produced by the inspection model and stored with the result.</p>
+    <div class="grid-2" style="margin-top:18px">
+      <div class="steps">
+        <div class="step"><b>1</b><div><strong>Register handshake</strong><span>Confirm the application, environment, stack, and release target.</span></div></div>
+        <div class="step"><b>2</b><div><strong>Health and response time</strong><span>Liveness, rolling uptime against a 99% bar, and a 280ms p95 budget.</span></div></div>
+        <div class="step"><b>3</b><div><strong>Database and error handling</strong><span>Encrypted connections, pending migrations, pool latency, and generic client errors.</span></div></div>
+        <div class="step"><b>4</b><div><strong>Security controls</strong><span>Auth, cookies, CORS, headers, rate limits, debug exposure, secrets, dependencies, uploads, and audit logs.</span></div></div>
+        <div class="step"><b>5</b><div><strong>Score</strong><span>Health and security penalties are subtracted from 100, then combined.</span></div></div>
+        <div class="step"><b>6</b><div><strong>Advisor and verdict</strong><span>Deployment advice, then deploy, warning, or block.</span></div></div>
+      </div>
+      <article class="card">
+        <p class="kicker">Readiness</p>
+        <h2>45% health, 55% security</h2>
+        <div class="formula">round(health × 0.45 + security × 0.55)</div>
+        <p>Both scores are clamped from 0 to 100. A critical finding, or a readiness score under 60, blocks the release. 60 to 79 is a warning and needs a human review. 80 or above, with no critical findings, can deploy.</p>
+        <div class="verdicts">
+          <div class="verdict ok"><strong>Deploy</strong><span>80+ and no critical findings.</span></div>
+          <div class="verdict hold"><strong>Warning</strong><span>60–79. Hold a full cutover.</span></div>
+          <div class="verdict stop"><strong>Block</strong><span>Under 60, or any critical gate.</span></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section reveal">
+    <div class="section-head">
+      <div class="section-head-label">Security checks</div>
+      <div class="section-head-line"></div>
+    </div>
+    <p>Nineteen gates are implemented. Four are health. Fifteen are security. Each failed gate carries a severity and a score impact, and the report lists what to fix first.</p>
+    <p class="kicker" style="margin-top:18px">Health and reliability</p>
+    <div class="gates">
+      <span class="gate health">Application health</span>
+      <span class="gate health">Response time</span>
+      <span class="gate health">Database</span>
+      <span class="gate health">Error handling</span>
+    </div>
+    <p class="kicker" style="margin-top:16px">Security and compliance</p>
+    <div class="gates">
+      <span class="gate security">HTTPS</span>
+      <span class="gate security">Authentication</span>
+      <span class="gate security">Authorization</span>
+      <span class="gate security">Session cookies</span>
+      <span class="gate security">CORS</span>
+      <span class="gate security">HSTS</span>
+      <span class="gate security">Content type options</span>
+      <span class="gate security">Frame protection</span>
+      <span class="gate security">Content Security Policy</span>
+      <span class="gate security">Rate limiting</span>
+      <span class="gate security">Debug exposure</span>
+      <span class="gate security">Environment variables</span>
+      <span class="gate security">Dependencies</span>
+      <span class="gate security">File uploads</span>
+      <span class="gate security">Audit logs</span>
+    </div>
+    <p class="note">File uploads fail when a registered uploader writes into a public path or skips type and size checks. Session cookies are checked for Secure, HttpOnly, and SameSite. Dependency evidence is a lockfile-style table on the report, not a live advisory feed.</p>
+  </section>
+
+  <section class="section reveal" id="tony">
+    <div class="section-head">
+      <div class="section-head-label">Advisor</div>
+      <div class="section-head-line"></div>
+    </div>
+    <div class="grid-3">
+      <article class="card">
+        <p class="kicker">Deployment advisor</p>
+        <h2>Ready, risks, fix order</h2>
+        <p>From the latest inspection, the advisor answers whether the service is ready, lists the biggest risks, orders the first fixes from P0 to P2, and recommends approved, hold, or blocked.</p>
+      </article>
+      <article class="card">
+        <p class="kicker">Tony</p>
+        <h2>Workspace-trained answers</h2>
+        <p>Tony trains on the registered apps and inspections. Without an API key, answers come from that DeployGuard data. With <span style="font-family:var(--mono);color:var(--a3)">TONY_API_KEY</span>, training can be compiled by the configured model. The default model is gpt-4o-mini.</p>
+      </article>
+      <article class="card">
+        <p class="kicker">Voice</p>
+        <h2>Optional spoken reply</h2>
+        <p>The app can speak a sentence through ElevenLabs when that provider is configured. The portfolio demo does not call a voice provider. Its voice button says so.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section reveal" id="features">
+    <div class="section-head">
+      <div class="section-head-label">Implemented features</div>
+      <div class="section-head-line"></div>
+    </div>
+    <div class="grid-3">
+      <article class="card"><h2>Fleet dashboard</h2><p>Average readiness, healthy / warning / blocked counts, health and security bars, and recent gate results.</p></article>
+      <article class="card"><h2>Application catalog</h2><p>Register name, owner, email, environment, stack, health URL, repository, description, and whether the app accepts uploads.</p></article>
+      <article class="card"><h2>Recurring inspections</h2><p>Daily, weekly, monthly, or yearly. The dashboard lists what is due and can run due inspections.</p></article>
+      <article class="card"><h2>Readiness report</h2><p>Open an inspection to review gates, then print or download a report with the advisor decision.</p></article>
+      <article class="card"><h2>Owner mail</h2><p>After an inspection, the owner can be emailed the score and whether the release is cleared, on hold, or blocked.</p></article>
+      <article class="card"><h2>Access control</h2><p>People apply for access. An admin approves or denies. Roles cover admin, developer, DevOps, platform, security, and engineering manager.</p></article>
+      <article class="card"><h2>Sessions</h2><p>Passwords require 12 characters with upper, lower, number, and symbol. They are stored as PBKDF2-SHA-256. Sessions use an httpOnly cookie.</p></article>
+      <article class="card"><h2>Notices and theme</h2><p>In-app notices for new apps, finished inspections, and held releases. Light, dark, and system appearance.</p></article>
+      <article class="card"><h2>SQL-backed API</h2><p>The product UI calls a Node API. Applications, inspections, users, notices, and mail logs are stored in SQL Server.</p></article>
+    </div>
+  </section>
+
+  <section class="section reveal" id="stack">
+    <div class="section-head">
+      <div class="section-head-label">Stack</div>
+      <div class="section-head-line"></div>
+    </div>
+    <div class="pills">
+      <span class="pill">React 19</span>
+      <span class="pill">TypeScript</span>
+      <span class="pill">Vite</span>
+      <span class="pill">React Router</span>
+      <span class="pill">Tailwind CSS</span>
+      <span class="pill">Chart.js</span>
+      <span class="pill">Express</span>
+      <span class="pill">SQL Server</span>
+      <span class="pill">Helmet</span>
+      <span class="pill ai">Tony · gpt-4o-mini</span>
+      <span class="pill ai">ElevenLabs voice</span>
+    </div>
+    <div class="hero-cta" style="margin-top:28px">
+      <a class="btn-primary" href="https://deployguard.mayurpandit.in/" target="_blank" rel="noopener">Open live demo</a>
+      <a class="btn-outline" href="index.html">Back to portfolio</a>
+    </div>
+    <p class="note">No public GitHub repository or documentation site is configured for this project.</p>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-name">mayur <span>pandit</span> · DeployGuard</div>
+      <ul class="footer-links">
+        <li><a href="index.html">Portfolio</a></li>
+        <li><a href="https://deployguard.mayurpandit.in/" target="_blank" rel="noopener">Demo</a></li>
+        <li><a href="#">Top ↑</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script>
+const glow = document.getElementById('cursor-glow');
+document.addEventListener('mousemove', e => {
+  glow.style.left = e.clientX + 'px';
+  glow.style.top = e.clientY + 'px';
+});
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href');
+    if (id === '#') { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+    const el = document.querySelector(id);
+    if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
+});
+</script>
+</body>
+</html>

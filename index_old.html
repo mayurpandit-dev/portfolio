@@ -192,48 +192,6 @@ footer{border-top:1px solid var(--border);padding:40px 0;margin-top:80px;positio
 .footer-links a{font-size:12px;font-family:var(--mono);color:var(--text3);text-decoration:none;letter-spacing:0.04em;transition:color 0.2s}
 .footer-links a:hover{color:var(--a3)}
 
-/* ── DEPLOYGUARD ── */
-.dg-feature{margin:72px 0 8px}
-.dg-lead{font-size:15px;color:var(--text2);max-width:680px;margin:-18px 0 22px;line-height:1.8}
-.dg-layout{display:grid;grid-template-columns:1.15fr 0.85fr;gap:18px;align-items:stretch}
-.dg-shot{background:#0b1220;border:1px solid var(--border2);border-radius:16px;overflow:hidden;min-width:0}
-.dg-shot-bar{display:flex;align-items:center;gap:10px;height:40px;padding:0 14px;background:#0e1624;border-bottom:1px solid #243044;font-family:var(--mono);font-size:11px;color:#93a0b4}
-.dg-dots{display:flex;gap:6px}
-.dg-dots i{width:8px;height:8px;border-radius:50%;display:block;background:#243044}
-.dg-dots i:nth-child(1){background:#ef6d64}
-.dg-dots i:nth-child(2){background:#e4b85c}
-.dg-dots i:nth-child(3){background:#3dcc8e}
-.dg-shot-body{padding:16px}
-.dg-posture{display:grid;grid-template-columns:148px 1fr;border:1px solid #243044;border-radius:10px;overflow:hidden;background:#121a28}
-.dg-ring{display:flex;gap:10px;align-items:center;padding:14px;border-right:1px solid #243044}
-.dg-ring svg{width:64px;height:64px;flex-shrink:0}
-.dg-ring p{font-size:12px;color:#93a0b4;line-height:1.35}
-.dg-ring strong{display:block;color:#e7edf5;font-size:13px}
-.dg-stats{display:grid;grid-template-columns:1fr 1fr}
-.dg-stat{padding:12px 14px;border-bottom:1px solid #243044;border-left:1px solid #243044}
-.dg-stat:nth-child(odd){border-left:0}
-.dg-stat:nth-child(1),.dg-stat:nth-child(2){border-top:0}
-.dg-stat span{display:block;font-size:11px;color:#93a0b4}
-.dg-stat b{display:block;font-size:22px;color:#e7edf5;line-height:1.2;margin-top:2px}
-.dg-stat b.ok{color:#3dcc8e}
-.dg-stat b.warn{color:#e4b85c}
-.dg-stat b.bad{color:#ef6d64}
-.dg-fleet{margin-top:12px;display:flex;flex-direction:column;gap:8px}
-.dg-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 10px;border-radius:8px;background:#121a28;border:1px solid #243044;min-width:0}
-.dg-row div{min-width:0}
-.dg-row strong{display:block;font-size:13px;color:#e7edf5;font-weight:600}
-.dg-row span{font-size:11px;color:#93a0b4;font-family:var(--mono)}
-.dg-badge{font-family:var(--mono);font-size:10px;letter-spacing:0.04em;padding:3px 8px;border-radius:100px;flex-shrink:0}
-.dg-badge.bad{color:#ef6d64;background:rgba(239,109,100,0.12);border:1px solid rgba(239,109,100,0.3)}
-.dg-badge.warn{color:#e4b85c;background:rgba(228,184,92,0.12);border:1px solid rgba(228,184,92,0.28)}
-.dg-badge.ok{color:#3dcc8e;background:rgba(61,204,142,0.12);border:1px solid rgba(61,204,142,0.28)}
-.dg-copy h3{font-size:22px;color:#fff;letter-spacing:-0.03em;margin-bottom:8px}
-.dg-copy p{font-size:14px;color:var(--text2);margin-bottom:14px}
-.dg-points{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
-.dg-points li{font-size:13px;color:var(--text2);padding-left:16px;position:relative;line-height:1.55}
-.dg-points li::before{content:'';position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:linear-gradient(135deg,var(--a1),var(--cyan))}
-.dg-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-
 /* ── RESPONSIVE ── */
 @media(max-width:800px){
   nav{padding:0 16px}
@@ -254,11 +212,6 @@ footer{border-top:1px solid var(--border);padding:40px 0;margin-top:80px;positio
   .ai-tools-grid{grid-template-columns:1fr 1fr}
   footer .footer-inner{flex-direction:column;text-align:center}
   .nav-ai-badge{display:none}
-  .dg-posture{grid-template-columns:1fr}
-  .dg-ring{border-right:0;border-bottom:1px solid #243044}
-}
-@media(max-width:800px){
-  .dg-layout{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -615,67 +568,6 @@ footer{border-top:1px solid var(--border);padding:40px 0;margin-top:80px;positio
 
     </div>
   </div>
-
-  <!-- DEPLOYGUARD -->
-  <section class="dg-feature reveal" id="deployguard">
-    <div class="section-head">
-      <div class="section-head-label">Featured project</div>
-      <div class="section-head-line"></div>
-    </div>
-    <p class="dg-lead">DeployGuard is an AI-powered application security and deployment readiness platform. It scores a registered service and decides whether that release can ship.</p>
-    <div class="dg-layout">
-      <div class="dg-shot">
-        <div class="dg-shot-bar">
-          <span class="dg-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-          <span>DeployGuard · Production readiness</span>
-        </div>
-        <div class="dg-shot-body">
-          <div class="dg-posture">
-            <div class="dg-ring">
-              <svg viewBox="0 0 76 76" aria-hidden="true">
-                <circle cx="38" cy="38" r="30" fill="none" stroke="#243044" stroke-width="8"/>
-                <circle cx="38" cy="38" r="30" fill="none" stroke="#e4b85c" stroke-width="8" stroke-linecap="round" stroke-dasharray="120.6 188.5" transform="rotate(-90 38 38)"/>
-                <text x="38" y="42" text-anchor="middle" font-size="16" font-weight="600" fill="#e7edf5" font-family="IBM Plex Sans, Space Grotesk, sans-serif">64</text>
-              </svg>
-              <p>Average readiness<strong>Warning</strong></p>
-            </div>
-            <div class="dg-stats">
-              <div class="dg-stat"><span>Applications</span><b>7</b></div>
-              <div class="dg-stat"><span>Healthy</span><b class="ok">2</b></div>
-              <div class="dg-stat"><span>Warning</span><b class="warn">3</b></div>
-              <div class="dg-stat"><span>Blocked</span><b class="bad">2</b></div>
-            </div>
-          </div>
-          <div class="dg-fleet">
-            <div class="dg-row"><div><strong>Admin Portal</strong><span>24 / 100 · due now</span></div><span class="dg-badge bad">Blocked</span></div>
-            <div class="dg-row"><div><strong>Identity Service</strong><span>41 / 100 · HTTPS</span></div><span class="dg-badge bad">Blocked</span></div>
-            <div class="dg-row"><div><strong>Checkout API</strong><span>62 / 100 · session cookies</span></div><span class="dg-badge warn">Warning</span></div>
-            <div class="dg-row"><div><strong>Inventory Worker</strong><span>85 / 100 · cleared</span></div><span class="dg-badge ok">Healthy</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="dg-copy">
-        <h3>Know if a service is safe to promote.</h3>
-        <p>Register an application, run the inspection, and DeployGuard returns a health score, a security score, and a readiness score. A critical finding, or a score under 60, blocks the release.</p>
-        <ul class="dg-points">
-          <li>Nineteen implemented gates, from HTTPS and session cookies to uploads, dependencies, and audit logs.</li>
-          <li>Readiness is round(health × 0.45 + security × 0.55). The advisor then approves, holds, or blocks the release.</li>
-          <li>Tony answers from the workspace. With an API key, training can be compiled by the model.</li>
-        </ul>
-        <div class="dg-actions">
-          <a href="deployguard.html" class="btn-primary">View project</a>
-          <a href="https://deployguard.mayurpandit.in/" class="btn-outline" target="_blank" rel="noopener">Live demo</a>
-        </div>
-        <div class="pills-wrap">
-          <span class="pill">React</span>
-          <span class="pill">TypeScript</span>
-          <span class="pill">Express</span>
-          <span class="pill">SQL Server</span>
-          <span class="pill ai">Tony</span>
-        </div>
-      </div>
-    </div>
-  </section>
 
 </div><!-- /wrap -->
 
